@@ -36,7 +36,9 @@ def create_app():
         return send_from_directory(app.config['CAB_UPLOAD_FOLDER'], filename)
 
     return app
+    
+app = create_app()
 
 if __name__ == '__main__':
-    app = create_app()
     app.run(debug=True)
+
