@@ -235,27 +235,18 @@ p {
     width: 100%; /* Explore Cars takes full row */
   }
 }
-@media (max-width: 480px) {
-  .showcase-section .d-flex {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-  }
-
+@media (max-width: 400px) {
   .showcase-button {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .showcase-button:first-child {
-    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.6rem 0.8rem;
   }
 
   .showcase-button:nth-child(2),
   .showcase-button:nth-child(3) {
-    width: 48%; /* Slightly less than half to allow for real spacing */
+    width: 48%;
   }
 }
+
 /* === Animations === */
 @keyframes fadeSlideUp {
     0% {
