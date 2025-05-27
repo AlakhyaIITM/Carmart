@@ -223,20 +223,19 @@ p {
   }
 
   .showcase-button {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-
-  .showcase-button:first-child {
-    flex-basis: 100%;
+    width: 100%;
   }
 
   .showcase-button:nth-child(2),
   .showcase-button:nth-child(3) {
-    flex: 1 1 calc(50% - 10px); /* side-by-side with gap */
-    max-width: calc(50% - 10px);
+    width: calc(50% - 10px); /* half width minus gap */
+  }
+
+  .showcase-button:first-child {
+    width: 100%; /* Explore Cars takes full row */
   }
 }
+
 /* === Animations === */
 @keyframes fadeSlideUp {
     0% {
