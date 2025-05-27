@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container pt-5 mt-5">
+        <h2>Edit Car Details</h2>
+        
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="make">Make</label>
+                <input type="text" class="form-control" id="make" name="make" value="{{ car.make }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="model">Model</label>
+                <input type="text" class="form-control" id="model" name="model" value="{{ car.model }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="year">Year</label>
+                <input type="number" class="form-control" id="year" name="year" value="{{ car.year }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" name="price" value="{{ car.price }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description">{{ car.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="kilometers_driven">Kilometers Driven</label>
+                <input type="text" class="form-control" id="kilometers_driven" name="kilometers_driven" value="{{ car.kilometers_driven }}">
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_type">Fuel Type</label>
+                <input type="text" class="form-control" id="fuel_type" name="fuel_type" value="{{ car.fuel_type }}">
+            </div>
+
+            <div class="form-group">
+                <label for="transmission">Transmission</label>
+                <input type="text" class="form-control" id="transmission" name="transmission" value="{{ car.transmission }}">
+            </div>
+
+            <div class="form-group">
+                <label for="color">Color</label>
+                <input type="text" class="form-control" id="color" name="color" value="{{ car.color }}">
+            </div>
+
+            <div class="form-group">
+                <label for="owner_number">Owner Number</label>
+                <input type="text" class="form-control" id="owner_number" name="owner_number" value="{{ car.owner_number }}">
+            </div>
+
+            <div class="form-group">
+                <label for="manufacturing_year">Manufacturing Year</label>
+                <input type="text" class="form-control" id="manufacturing_year" name="manufacturing_year" value="{{ car.manufacturing_year }}">
+            </div>
+
+            <div class="form-group">
+                <label for="registration_year">Registration Year</label>
+                <input type="text" class="form-control" id="registration_year" name="registration_year" value="{{ car.registration_year }}">
+            </div>
+
+            <div class="form-group">
+                <label for="registration_type">Registration Type</label>
+                <input type="text" class="form-control" id="registration_type" name="registration_type" value="{{ car.registration_type }}">
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" name="location" value="{{ car.location }}">
+            </div>
+
+            <div class="form-group">
+                <label for="seller_name">Seller Name</label>
+                <input type="text" class="form-control" id="seller_name" name="seller_name" value="{{ car.seller_name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="seller_contact">Seller Contact</label>
+                <input type="text" class="form-control" id="seller_contact" name="seller_contact" value="{{ car.seller_contact }}">
+            </div>
+
+            <div class="form-group">
+                <label for="engine">Engine</label>
+                <input type="text" class="form-control" id="engine" name="engine" value="{{ car.get_specifications()['Engine Displacement'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="mileage">Mileage</label>
+                <input type="text" class="form-control" id="mileage" name="mileage" value="{{ car.get_specifications()['Mileage'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="fuel_tank">Fuel Tank Capacity</label>
+                <input type="text" class="form-control" id="fuel_tank" name="fuel_tank" value="{{ car.get_specifications()['Fuel Tank Capacity'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="seating_capacity">Seating Capacity</label>
+                <input type="text" class="form-control" id="seating_capacity" name="seating_capacity" value="{{ car.get_specifications()['Seating Capacity'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="body_type">Body Type</label>
+                <input type="text" class="form-control" id="body_type" name="body_type" value="{{ car.get_specifications()['Body Type'] }}">
+            </div>
+
+            <div class="form-group">
+                <label for="features">Features (comma separated)</label>
+                <input type="text" class="form-control" id="features" name="features" value="{{ car.get_features() | join(', ') }}">
+            </div>
+
+            <div class="form-group">
+                <label for="images">Images</label>
+                <input type="file" class="form-control" id="images" name="images" multiple>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update Car</button>
+        </form>
+    </div>
+{% endblock %}

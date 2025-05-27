@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% block content %}
+{% set images = car.get_images() %}
+
+<div class="container view-car pt-5 mt-5 mb-5 row align-items-center">
+  <div class="col-md-6">
+    {% if images and images|length > 0 %}
+    <div class="custom-slider text-center position-relative mb-3" id="sliderContainer">
+      <img id="mainImage"
+           src="{{ url_for('static', filename='images/cars/' ~ images[0]) }}"
+           class="img-fluid rounded main-image shadow"
+           alt="Main Image"
+           onclick="toggleFullscreen(this)">
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="thumbnail-slider d-flex gap-2 overflow-auto py-2 px-1">
+      {% for image in images %}
+      <img src="{{ url_for('static', filename='images/cars/' ~ image) }}"
+           class="thumbnail-img rounded shadow-sm"
+           onclick="changeMainImage(this)"
+           alt="Thumbnail {{ loop.index }}">
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No images available</p>
+    {% endif %}
+  </div>
+
+  <!-- Car Info -->
+  <div class="col-md-6 d-flex flex-column justify-content-center mt-4 mt-md-0">
+    <h2>{{ car.make }} {{ car.model }} ({{ car.year }})</h2>
+    <p class="text-success fs-4"><strong>{{ car.price | inr }}</strong></p>
+    <p>{{ car.description }}</p>
+
+    <a href="https://wa.me/919434228952?text=Hi%2C%20I%27m%20interested%20in%20the%20{{ car.make }}%20{{ car.model }}%20(%20{{ car.year }}%20)%20listed%20on%20CarMart.%20Could%20you%20share%20more%20details%3F"
+       class="btn btn-success w-100 mt-4" target="_blank">
+      Buy Now on WhatsApp
+    </a>
+  </div>
+
+  <!-- Car Details Section -->
+  <div class="mt-5">
+    <h4 class="border-bottom pb-2 mb-4">Car Details</h4>
+    <table class="table table-striped table-bordered">
+      {% set details = {
+        'Kilometers Driven': car.kilometers_driven,
+        'Fuel Type': car.fuel_type,
+        'Transmission': car.transmission,
+        'Color': car.color,
+        'Number of Owners': car.owner_number,
+        'Manufacturing Year': car.manufacturing_year,
+        'Registration Year': car.registration_year,
+        'Registration Type': car.registration_type,
+        'Last Updated': car.last_updated,
+        'Location': car.location
+      } %}
+      {% for label, value in details.items() %}
+        {% if value %}
+        <tr>
+          <th>{{ label }}</th>
+          <td>{{ value }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+
+  <!-- Specifications Section -->
+  {% if car.specifications %}
+  <div class="mt-5">
+    <h4 class="border-bottom pb-2 mb-4">Specifications</h4>
+    <table class="table table-striped table-bordered">
+      {% for spec, value in specifications.items() %}
+        {% if value %}
+        <tr>
+          <th>{{ spec }}</th>
+          <td>{{ value }}</td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+  {% endif %}
+
+  <!-- Features Section -->
+  {% if features %}
+  <div class="mt-5">
+    <h4 class="border-bottom pb-2 mb-4 text-center">Features</h4>
+    <ul class="features-list d-inline-flex flex-wrap justify-content-center gap-3 list-unstyled">
+      {% for feature in features %}
+      <li class="feature-item bg-light border rounded px-3 py-2 shadow-sm">{{ feature }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+</div>
+</div>
+<!-- Fullscreen View -->
+<div id="customFullscreen" class="d-none">
+  <div class="fullscreen-overlay" id="fullscreenOverlay">
+    <button class="close-btn" id="closeFullscreenBtn" onclick="closeCustomFullscreen()">
+      <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="fullscreen-nav">
+      <button class="arrow-left" onclick="changeImage(-1)"><i class="bi bi-arrow-left-circle"></i></button>
+      <img id="fullscreenImage" src="" alt="Fullscreen Image">
+      <button class="arrow-right" onclick="changeImage(1)"><i class="bi bi-arrow-right-circle"></i></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let current = 0;
+  const images = {{ images | tojson }};
+  const mainImage = document.getElementById('mainImage');
+  const sliderContainer = document.getElementById('sliderContainer');
+  let autoSlideInterval;
+
+  function changeMainImage(thumb) {
+    mainImage.src = thumb.src;
+    current = images.indexOf(thumb.src.split('/').pop());
+  }
+
+  function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+      current = (current + 1) % images.length;
+      mainImage.src = "/static/images/cars/" + images[current];
+    }, 4000);
+  }
+
+  function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+  }
+
+  sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+  sliderContainer.addEventListener('mouseleave', startAutoSlide);
+
+  // Fullscreen view on click
+  function toggleFullscreen(img) {
+    const overlay = document.getElementById('customFullscreen');
+    const fullImg = document.getElementById('fullscreenImage');
+    fullImg.src = img.src;
+    overlay.classList.remove('d-none');
+    current = images.indexOf(img.src.split('/').pop()); // Set current index
+  }
+  // Keyboard navigation
+  document.addEventListener('keydown', function (e) {
+    const overlay = document.getElementById('customFullscreen');
+    if (!overlay.classList.contains('d-none')) {
+      if (e.key === 'ArrowRight') {
+        changeImage(1); // Go to next image
+      } else if (e.key === 'ArrowLeft') {
+        changeImage(-1); // Go to previous image
+      } else if (e.key === 'Escape') {
+        closeCustomFullscreen(); // Close fullscreen on Escape
+      }
+    }
+  });
+  // Close when tapping close button
+  function closeCustomFullscreen() {
+    document.getElementById('customFullscreen').classList.add('d-none');
+  }
+
+  // Change image based on direction (1 = next, -1 = previous)
+  function changeImage(direction) {
+    current = (current + direction + images.length) % images.length;
+    const fullImg = document.getElementById('fullscreenImage');
+    fullImg.src = "/static/images/cars/" + images[current];
+  }
+
+  // Tap outside image to close
+  document.getElementById('fullscreenOverlay').addEventListener('click', function (e) {
+    if (e.target.id === 'fullscreenOverlay') {
+      closeCustomFullscreen();
+    }
+  });
+
+  // Swipe down to close (mobile)
+  let touchStartY = 0;
+  let touchEndY = 0;
+
+  document.getElementById('fullscreenOverlay').addEventListener('touchstart', function (e) {
+    touchStartY = e.touches[0].clientY;
+  });
+
+  document.getElementById('fullscreenOverlay').addEventListener('touchend', function (e) {
+    touchEndY = e.changedTouches[0].clientY;
+    if (touchEndY - touchStartY > 50) {
+      closeCustomFullscreen();
+    }
+  });
+
+  // Start on load
+  startAutoSlide();
+</script>
+
+{% endblock %}

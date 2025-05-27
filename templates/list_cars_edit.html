@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Manage Cars | CarMart{% endblock %}
+{% block content %}
+
+<div class="container pt-5 mt-5">
+  <h2 class="mb-4 text-center">Manage Cars</h2>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="mb-4">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Image</th>
+          <th>Make & Model</th>
+          <th>Year</th>
+          <th>Price</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for car in cars %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>
+            {% if car.get_images() %}
+              <img src="{{ url_for('static', filename='images/cars/' + car.get_images()[0]) }}" width="100" class="img-thumbnail">
+            {% else %}
+              <span>No Image</span>
+            {% endif %}
+          </td>
+          <td>{{ car.make }} {{ car.model }}</td>
+          <td>{{ car.year }}</td>
+          <td>{{ car.price | inr }}</td>
+          <td>
+            <a href="{{ url_for('car_bp.edit_car', car_id=car.id) }}" class="btn btn-sm btn-warning mb-1">Edit</a>
+            <form method="POST" action="{{ url_for('car_bp.delete_car', car_id=car.id) }}" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

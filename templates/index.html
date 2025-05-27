@@ -1,0 +1,521 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Showcase Section -->
+<section class="showcase-section">
+  <div class="container-fluid">
+      <div class="row align-items-center g-0">
+          <!-- Image (hidden on small screens) -->
+          <div class="col-lg-6 d-none d-lg-block">
+              <img src="{{ url_for('static', filename='images/featured-car4.png') }}" alt="Deal" class="img-fluid w-100 showcase-image">
+          </div>
+  
+          <!-- Text Content -->
+          <div class="col-lg-6 col-12 p-5 text-light">
+              <h2 class="fw-bold mb-3">Find Your Next Car, Book a Cab, or Reserve a Bus - All in One Place! 🤝</h2>
+              <div class="col-lg-100 d-none d-lg-block">
+                <p class="lead showcase-description">
+                    At CarMart, we specialize in making your travel and car buying experience smarter, smoother, and more satisfying. Based in the heart of North Bengal, we offer a wide range of services including verified pre-owned car sales, convenient cab rentals, and easy bus reservations. Whether you're buying your first car, booking a cab, or planning a bus journey, CarMart is where trust meets the road.
+                </p>
+              </div>
+              <div class="d-flex gap-3">
+                  <a href="#available-cars" class="btn btn-success showcase-button">Explore Cars</a>
+                  <a href="#cab-rental" class="btn btn-success showcase-button">Cab Rental</a>
+                  <a href="#bus-reservation" class="btn btn-success showcase-button">Bus Reservation</a>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="hero-content text-center">
+      <h1 class="hero-title">Travel Smart. Drive Happy.</h1>
+      <p class="hero-description">Pre-owned cars, cab rentals, and bus reservations – all at your fingertips.</p>
+      </div>
+  </div>
+</div>
+<!-- Available Cars Section -->
+<section id="available-cars" class="mt-5">
+  <div class="container position-relative">
+    <h2 class="title">Available Cars</h2>
+      {% if cars %}
+          <div class="row">
+              <div class="row-wrapper">
+                  {% for car in cars %}
+                  <div class="col-md-4 mb-4">
+                      <div class="card available-cars-card bg-dark text-light">
+                          <img src="{{ url_for('static', filename='images/cars/' + car.get_images()[0]) }}" alt="{{ car.model }}">
+                          <div class="card-body text-center">
+                              <h5 class="card-title mb-3">{{ car.make }} {{ car.model }}</h5>
+                              <p class="card-text">
+                                  Year: {{ car.year }}<br>
+                                  Price: ₹{{ "{:,}".format(car.price|int)|replace(",", ",") }}
+                              </p>
+                              <a href="{{ url_for('car_bp.view_car', car_id=car.id) }}" class="btn btn-light btn-sm">View Details</a>
+                          </div>
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+          </div>
+      {% else %}
+          <p class="text-center text-dark">No cars available at the moment. Check back soon!</p>
+      {% endif %}
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+          <div class="progress" id="scrollProgress"></div>
+      </div>
+  </div>
+</section>
+<!-- Cab Rental Section -->
+<section id="available-cars" class="mt-5">
+  <div class="container position-relative">
+    <h2 class="title">
+      <a href="{{ url_for('cab_bp.view_cabs') }}" class="text-decoration-none text-dark">Cab Rental</a></h2>    
+    {% if cabs %}
+      <div class="row">
+        <div class="row-wrapper">
+          {% for cab in cabs %}
+          <div class="col-md-4 mb-4">
+            <div class="card available-cars-card bg-dark text-light">
+              {% set image = cab.get_images()[0] if cab.get_images() else 'default_cab.jpg' %}
+              <img src="{{ url_for('static', filename='images/cabs/' + image) }}" alt="{{ cab.model }}">
+              <div class="card-body text-center">
+                <h5 class="card-title mb-3">{{ cab.make }} {{ cab.model }}</h5>
+                <p class="card-text">
+                  Year: {{ cab.year }}<br>
+                  Seating: {{ cab.seating_capacity }} Seater<br>
+                  {{ "AC" if cab.ac else "Non-AC" }}
+                </p>
+                <a href="{{ url_for('cab_bp.view_cabs') }}" class="btn btn-light btn-sm">View Details</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-dark">No cabs available at the moment. Check back soon!</p>
+    {% endif %}
+</section>
+<!-- Bus Rental Section -->
+<section id="bus-rental" class="mt-5">
+  <div class="container position-relative">
+    <h2 class="title">Bus Rental</h2>
+    {% if buses %}
+      <div class="row">
+        <div class="row-wrapper">
+          {% for bus in buses %}
+          <div class="col-md-4 mb-4">
+            <div class="card available-cars-card bg-dark text-light">
+              {% set image = bus.get_image() %}
+              <img src="{{ url_for('static', filename='images/buses/' + image) }}" alt="{{ bus.model }}">
+              <div class="card-body text-center">
+                <h5 class="card-title mb-3">{{ bus.name }} {{ bus.model }}</h5>
+                <p class="card-text">
+                  Seating: {{ bus.seating_capacity }} Seater
+                </p>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <p class="text-center text-dark">No buses available at the moment. Check back soon!</p>
+    {% endif %}
+  </div>
+</section>
+<!-- Why Choose Us Cards -->
+<section class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="title">Why Choose CarMart?</h2>
+    <div class="row justify-content-center">
+      <!-- Card 1: Verified Cars -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-dark text-light">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-patch-check-fill"></i>
+            </div>
+            <h3 class="card-title mb-3">Verified Cars</h3>
+            <p class="card-text">Each car undergoes a 100+ point inspection to ensure top quality.</p>
+            <a href="#available-cars" class="btn btn-light">View Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2: Bus Reservations -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-light text-dark">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-bus-front-fill"></i>
+            </div>
+            <h3 class="card-title mb-3">Bus Reservations</h3>
+            <p class="card-text">Book buses for group travels with ease and comfort.</p>
+            <a href="#bus-reservation" class="btn btn-dark">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Cab Rentals -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-dark text-light">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-car-front-fill"></i>
+            </div>
+            <h3 class="card-title mb-3">Cab Rentals</h3>
+            <p class="card-text">Affordable and reliable cab services to meet your travel needs.</p>
+            <a href="#cab-rental" class="btn btn-light">Explore</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+ <!-- How It Works Cards Section -->
+<section id="how-it-works" class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="title">How It Works?</h2>
+    <div class="row justify-content-center">
+      <!-- Step 1: Select Service -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-light shadow-sm">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-gear-wide-connected"></i>
+            </div>
+            <h5 class="card-title mb-3">Select a Service</h5>
+            <p class="card-text">Choose from our range of services. Whether you're buying a car, planning a trip, or commuting, we make it easy to find and book the service that suits your needs.</p>
+            <a href="#available-cars" class="btn btn-dark">Choose a Service</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Book a Visit or Ride -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-dark shadow-sm text-light">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-calendar-week-fill"></i>
+            </div>
+            <h5 class="card-title mb-3">Book a Visit or Ride</h5>
+            <p class="card-text">Schedule a test drive for a pre-owned car, book a cab, or reserve a bus depending on the service you've selected. Convenient and flexible booking options.</p>
+            <a href="#contact-location" class="btn btn-light">Book Now</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Finalize Your Service -->
+      <div class="col-md-4 mb-4">
+        <div class="card custom-card bg-light shadow-sm">
+          <div class="card-body">
+            <div class="card-icon">
+              <i class="bi bi-trophy"></i>
+            </div>
+            <h5 class="card-title mb-3">Finalize Your Service</h5>
+            <p class="card-text">Complete your purchase, ride, or reservation with ease. Enjoy your new vehicle, ride, or bus journey with all the necessary documentation and smooth service.</p>
+            <a href="#available-cars" class="btn btn-dark">Finalize Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- Customer Reviews -->
+<section class="reviews-section">
+    <div class="review-marquee-wrapper">
+      <div class="review-marquee">
+        <div class="review-card">
+          <p>"I never knew buying a car could be this fun! CarMart turned my dream into a reality."</p>
+          <h5>– Amrit Saha Roy</h5>
+        </div>
+        <div class="review-card">
+          <p>"Top-notch service! I got my car faster than my coffee got cold."</p>
+          <h5>– Sakshi Sarkar</h5>
+        </div>
+        <div class="review-card">
+          <p>"If I had a dollar for every compliment on my new ride, I’d be richer than my car!"</p>
+          <h5>– Victor Adhikari</h5>
+        </div>
+        <div class="review-card">
+          <p>"Friendly staff, quick processing, and they even gave me a free air freshener!"</p>
+          <h5>– Souvik Talukder </h5>
+        </div>
+        <div class="review-card">
+          <p>"I enjoyed so much during my test drive, I almost missed the traffic lights. Best experience ever!"</p>
+          <h5>– Prajesh Saha </h5>
+        </div>
+        <div class="review-card">
+          <p>"CarMart made car buying so simple; even my pet parrot could understand it!"</p>
+          <h5>– Arghodip Hore </h5>
+        </div>
+        <div class="review-card">
+          <p>"Best car dealership in town. I came for a car and left with a smile (and some good jokes)!"</p>
+          <h5>– Sonali Debnath </h5>
+        </div>
+      </div>
+      <!-- Duplicate the set for seamless scrolling -->
+      <div class="review-marquee">
+            <div class="review-card">
+                <p>"I never knew buying a car could be this fun! CarMart turned my dream into a reality."</p>
+                <h5>– Amrit Saha Roy</h5>
+                </div>
+                <div class="review-card">
+                <p>"Top-notch service! I got my car faster than my coffee got cold."</p>
+                <h5>– Sakshi Sarkar</h5>
+                </div>
+                <div class="review-card">
+                <p>"If I had a dollar for every compliment on my new ride, I’d be richer than my car!"</p>
+                <h5>– Victor Adhikari</h5>
+                </div>
+                <div class="review-card">
+                <p>"Friendly staff, quick processing, and they even gave me a free air freshener!"</p>
+                <h5>– Souvik Talukder </h5>
+                </div>
+                <div class="review-card">
+                <p>"I enjoyed so much during my test drive, I almost missed the traffic lights. Best experience ever!"</p>
+                <h5>– Prajesh Saha </h5>
+                </div>
+                <div class="review-card">
+                <p>"CarMart made car buying so simple; even my pet parrot could understand it!"</p>
+                <h5>– Arghodip Hore </h5>
+                </div>
+                <div class="review-card">
+                <p>"Best car dealership in town. I came for a car and left with a smile (and some good jokes)!"</p>
+                <h5>– Sonali Debnath </h5>
+                </div>
+        </div>
+    </div>
+</section>
+  
+
+<!-- FAQ Section -->
+<div class="container py-5" id="faq">
+  <h1 class="title">Frequently Asked Questions</h1>
+  <div class="accordion" id="faqAccordion">
+      <!-- FAQ 1: Test Drive Booking Process -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  What is the booking process for a test drive?
+              </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  To book a test drive, simply visit our "Book a Visit" section, select the vehicle model you want to test drive, choose your preferred time, and submit your details. Our team will confirm the booking.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 2: Car Availability -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  How do I check car availability at the dealership?
+              </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  You can check car availability by visiting our website, calling our sales team directly, or using our live chat for instant updates on specific models.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 3: Financing Options for Car Purchases -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                  Do you offer financing options for car purchases?
+              </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  Yes, we offer a range of financing options for car purchases. Please contact our finance team or visit us to learn more about our current offers and plans.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 4: Cab Rental Booking -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                  How do I book a cab through CarMart?
+              </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  You can book a cab by visiting the "Cab Rental" section on our website. Choose the type of ride, enter your details, and we will confirm your booking.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 5: Bus Reservation Process -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFive">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                  How do I reserve a bus for a trip?
+              </button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  To reserve a bus, simply visit the "Bus Reservation" section, select your destination, date, and time, and submit your details. We will confirm your booking promptly.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 6: Required Documents for Car Purchase -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSix">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                  What documents do I need to bring for a car purchase?
+              </button>
+          </h2>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  You will need to bring a valid ID proof, address proof, income proof, and your bank details (if financing). Additional documents may be required depending on the type of purchase.
+              </div>
+          </div>
+      </div>
+
+      <!-- FAQ 7: Cancellation Policy for Bookings -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSeven">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                  What is your cancellation policy for bookings?
+              </button>
+          </h2>
+          <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingSeven" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  We have a flexible cancellation policy. For cab and bus bookings, cancellations are accepted up to 24 hours before the scheduled time. For car purchases, cancellation terms will be discussed at the time of the agreement.
+              </div>
+          </div>
+      </div>
+      
+      <!-- FAQ 8: Home Delivery for Purchased Cars -->
+      <div class="accordion-item">
+          <h2 class="accordion-header" id="headingEight">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                  Do you offer home delivery for purchased cars?
+              </button>
+          </h2>
+          <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingEight" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                  Yes, we offer home delivery for purchased cars within a certain range. Please contact our sales team for more details about the delivery process and charges.
+              </div>
+          </div>
+      </div>
+  </div>
+</div>   
+<!-- Contact & Location Section -->
+<section id="contact-location" class="py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <!-- Contact Us Column -->
+      <div class="col-md-6 text-center mb-4 mb-md-0">
+        <h2>Contact Us</h2>
+        <p>Need assistance or want to schedule a visit? We’re here to help!</p>
+        <div class="contact-buttons">
+          <!-- Primary Call and WhatsApp -->
+          <a href="tel:+917479126549" class="btn btn-primary">
+            <i class="bi bi-telephone"></i> Call Us at 7479126549
+          </a>
+          <a href="https://wa.me/917479126549" target="_blank" class="btn btn-success">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </a>
+
+          <!-- Secondary Call and WhatsApp -->
+          <a href="tel:+919434228952" class="btn btn-primary">
+            <i class="bi bi-telephone"></i> Call Us at 9434228952
+          </a>
+          <a href="https://wa.me/919434228952" target="_blank" class="btn btn-success">
+            <i class="bi bi-whatsapp"></i> WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Location Column -->
+      <div class="col-md-6 text-center">
+        <h2>Our Locations</h2>
+        <div class="row">
+          <!-- Branch 1: Original Location -->
+          <div class="col-md-6">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3569.9971290710623!2d89.20161!3d26.520216800000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e3a42efe35ddef%3A0x87191f7e8f9f7023!2sPen%20Mart%20Optical!5e0!3m2!1sen!2sin!4v1743875986294!5m2!1sen!2sin"
+              width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <p><strong>Branch 1: CarMart, Beside Pen Mart Optical, Falakata</strong></p>
+          </div>
+
+          <!-- Branch 2: New Location -->
+          <div class="col-md-6">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d222.96129936708198!2d89.13965409017753!3d26.604238489062023!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2s!5e0!3m2!1sen!2sin!4v1745765210669!5m2!1sen!2sin"
+              width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+            <p><strong>Branch 2: Sarkar Auto, Jateswar</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- About Us Section -->
+<section id="about-us" class="about-us py-5">
+  <div class="container">
+    <div class="row no-gutters d-flex align-items-center flex-wrap">
+      
+      <!-- Text Content (Left) -->
+      <div class="col-md-6">
+        <div class="about-text">
+          <h2>About Us</h2>
+        <p>
+          At <strong>CarMart</strong>, we are redefining the way North Bengal moves — with trust, transparency, and care at the heart of everything we do.
+          Founded by lifelong friends <strong>Alakhya Sarkar</strong> and <strong>Subham Talukder</strong>, CarMart began with a shared dream: to make vehicle ownership and travel easier, fairer, and more joyful.
+        </p>
+        <p>
+          Today, CarMart proudly operates across <strong>three key services</strong>:
+          <ul>
+            <li><strong>Pre-Owned Vehicle Sales:</strong> Quality-verified, fully documented cars, ready for their next journey.</li>
+            <li><strong>Bus Reservations:</strong> Simple, reliable solutions for schools, businesses, and group travelers.</li>
+            <li><strong>Cab Rentals:</strong> Comfortable, dependable rides for everyday commutes and special trips.</li>
+          </ul>
+        </p>
+        <p>
+          Every car we sell is inspected across 100+ checkpoints. Every ride we offer is backed by professional service and transparent pricing.
+          Because at CarMart, we believe mobility should feel <strong>easy, exciting, and trustworthy</strong>.
+        </p>
+        <p>
+          We are proud to call North Bengal our home — and even prouder to serve the people who drive its future.<br>
+          <strong>CarMart: Moving Dreams. Driving Trust.</strong>
+        </p>
+      </div>
+      </div>
+
+      <!-- Image Content (Right) -->
+      <div class="col-md-6">
+        <div class="about-img text-center">
+          <img src="/static/images/friend.png" alt="Founders of CarMart" class="img-fluid zoom-hover">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</section>
+
+{% endblock %}
+
+

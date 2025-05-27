@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Add New Cab - CarMart{% endblock %}
+
+{% block content %}
+<div class="container pt-5 mt-5">
+    <h2 class="mb-4 text-center">Add a New Cab</h2>
+
+    <!-- Flash message display -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data" class="shadow p-4 bg-light rounded">
+        <div class="mb-3">
+            <label for="make" class="form-label">Make</label>
+            <input type="text" id="make" name="make" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="model" class="form-label">Model</label>
+            <input type="text" id="model" name="model" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="year" class="form-label">Year</label>
+            <input type="number" id="year" name="year" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="seating_capacity" class="form-label">Seating Capacity</label>
+            <input type="number" id="seating_capacity" name="seating_capacity" class="form-control" required>
+        </div>
+
+        <div class="form-check mb-3">
+            <input type="checkbox" class="form-check-input" id="ac" name="ac">
+            <label class="form-check-label" for="ac">AC Available</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="images" class="form-label">Cab Images</label>
+            <input type="file" id="images" name="images" class="form-control" accept="image/*" multiple>
+            <small class="form-text text-muted">You can upload multiple images for the cab.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Add Cab</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CarMart - Buy Used Cars, Cab Rentals & Bus Booking in North Bengal{% endblock %}</title>
+    <meta name="description" content="CarMart offers top deals on used cars, reliable cab rentals, and affordable bus booking services across North Bengal. Find your perfect vehicle with us today!">
+    <meta name="keywords" content="CarMart, used cars, cab rentals, bus booking, bus reservation, North Bengal, vehicle services">
+    <meta name="author" content="Alakhya Sarkar">
+    <meta name="author" content="Subham Talukder">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand brand-title" href="/">CarMart</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about-us">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact-location">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('admin.admin_dashboard') }}">Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <main class="container-fluid p-0">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="text-center py-4">
+        <p class="mb-1">🚧 <strong>Beta Phase of CarMart</strong></p>
+        <p class="mb-1">Start Date: <strong>April 5, 2025</strong></p>
+        <p class="mb-1">Developer: <a href="https://www.linkedin.com/in/alakhya-sarkar/" class="linkedin-link" target="_blank">
+            <strong>Alakhya Sarkar</strong></a></p>
+        <p class="mb-1">ℹ️ Work left: Add user authentication. Create an admin dashboard.</p>
+        <p>📱 <a href="https://wa.me/919641802788" class="whatsapp-link" target="_blank">Contact on WhatsApp</a></p>
+        <p class="mb-0">&copy; 2025 CarMart. All rights reserved.</p>
+    </footer>
+
+    <!-- Fullscreen Image -->
+    <div id="customFullscreen" class="d-none">
+        <div class="fullscreen-overlay">
+          <span class="close-btn" onclick="closeCustomFullscreen()">&times;</span>
+          <img id="fullscreenImage" class="img-fluid rounded" alt="Fullscreen View">
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        const rowWrapper = document.querySelector('.row-wrapper');
+        const progressBar = document.querySelector('.scroll-indicator .progress');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+
+        // Update progress bar when user scrolls normally
+        rowWrapper.addEventListener('scroll', function() {
+            const scrollPercent = (rowWrapper.scrollLeft / (rowWrapper.scrollWidth - rowWrapper.clientWidth)) * 100;
+            progressBar.style.width = scrollPercent + '%';
+        });
+
+        // Dragging the progress bar
+        let isDragging = false;
+
+        scrollIndicator.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            updateScroll(e);
+        });
+
+        window.addEventListener('mouseup', function() {
+            isDragging = false;
+        });
+
+        window.addEventListener('mousemove', function(e) {
+            if (isDragging) {
+                updateScroll(e);
+            }
+        });
+
+        // Clicking directly on the scroll bar
+        scrollIndicator.addEventListener('click', function(e) {
+            updateScroll(e);
+        });
+
+        function updateScroll(e) {
+            const rect = scrollIndicator.getBoundingClientRect();
+            const x = e.clientX - rect.left; // X position inside the indicator
+            const percent = Math.min(Math.max(x / rect.width, 0), 1); // clamp between 0 and 1
+            rowWrapper.scrollLeft = percent * (rowWrapper.scrollWidth - rowWrapper.clientWidth);
+            progressBar.classList.remove('swell');
+            void progressBar.offsetWidth; // trigger reflow
+            progressBar.classList.add('swell');
+            progressBar.style.width = (percent * 100) + '%';
+        }
+    });
+
+    </script>
+</body>
+</html>

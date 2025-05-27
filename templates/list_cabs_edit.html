@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container pt-5 mt-5">
+    <h2 class="mb-4">Edit or Delete Cabs</h2>
+
+    {% if cabs %}
+        <div class="row">
+            {% for cab in cabs %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        {% if cab.images and cab.images[0] %}
+                            <img src="{{ url_for('static', filename='images/cabs/' ~ cab.images[0].filename) }}" class="card-img-top" alt="Cab Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cab.make }} {{ cab.model }}</h5>
+                            <p class="card-text">Year: {{ cab.year }}<br>Seats: {{ cab.seating_capacity }}<br>AC: {{ 'Yes' if cab.ac else 'No' }}</p>
+                            <a href="{{ url_for('cab_bp.edit_cab', cab_id=cab.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            <form action="{{ url_for('cab_bp.delete_cab', cab_id=cab.id) }}" method="POST" class="d-inline-block" onsubmit="return confirm('Delete this cab?');">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No cabs added yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

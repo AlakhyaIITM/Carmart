@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Add New Bus - CarMart{% endblock %}
+
+{% block content %}
+<div class="container pt-5 mt-5">
+    <h2 class="mb-4">Add a New Bus</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Bus Name</label>
+            <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" name="model" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Seating Capacity</label>
+            <input type="number" name="seating_capacity" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Image</label>
+            <input type="file" name="image" accept="image/*" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-success">Add Bus</button>
+    </form>
+</div>
+{% endblock %}

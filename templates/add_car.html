@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Add a Car | CarMart{% endblock %}
+{% block content %}
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="mt-4">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="container pt-5 mt-5">
+  <h2 class="mb-4 text-center">Add a New Car</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="shadow p-4 bg-light rounded">
+
+    <!-- Basic Info -->
+    <h5 class="mb-3">Basic Info</h5>
+    <div class="row g-3">
+      {% for field in [
+        {'id': 'make', 'label': 'Make', 'type': 'text', 'placeholder': 'e.g., Ford', 'required': True},
+        {'id': 'model', 'label': 'Model', 'type': 'text', 'placeholder': 'e.g., EcoSport', 'required': True},
+        {'id': 'year', 'label': 'Year', 'type': 'number', 'placeholder': 'e.g., 2019', 'required': True},
+        {'id': 'price', 'label': 'Price (₹)', 'type': 'number', 'placeholder': 'e.g., 728000', 'required': True},
+        {'id': 'kilometers_driven', 'label': 'Kilometers Driven', 'type': 'number', 'placeholder': 'e.g., 69364'},
+        {'id': 'fuel_type', 'label': 'Fuel Type', 'type': 'text', 'placeholder': 'e.g., Diesel'},
+        {'id': 'registration_year', 'label': 'Registration Year', 'type': 'text', 'placeholder': 'e.g., 2017'},
+        {'id': 'manufacturing_year', 'label': 'Manufacturing Year', 'type': 'text', 'placeholder': 'e.g., 2017'},
+        {'id': 'owner_number', 'label': 'Number of Owners', 'type': 'text', 'placeholder': 'e.g., First'},
+        {'id': 'transmission', 'label': 'Transmission', 'type': 'text', 'placeholder': 'e.g., Manual - 5 Gears'},
+        {'id': 'color', 'label': 'Color', 'type': 'text', 'placeholder': 'e.g., Silver'},
+        {'id': 'location', 'label': 'Location', 'type': 'text', 'placeholder': 'e.g., City Name'},
+        {'id': 'registration_type', 'label': 'Registration Type', 'type': 'text', 'placeholder': 'e.g., Individual'}
+      ] %}
+      <div class="col-md-6">
+        <label for="{{ field.id }}" class="form-label">{{ field.label }}</label>
+        <input type="{{ field.type }}" class="form-control" id="{{ field.id }}" name="{{ field.id }}" placeholder="{{ field.placeholder }}" {% if field.required %}required{% endif %}>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3 mt-4">
+      <label for="description" class="form-label">Car Description</label>
+      <textarea class="form-control" id="description" name="description" rows="4" maxlength="1000" placeholder="Write a short description about the car..."></textarea>
+    </div>
+
+    <!-- Specifications -->
+    <h5 class="mt-4 mb-3">Specifications</h5>
+    <div class="row g-3">
+      {% for spec in [
+        {'id': 'engine', 'label': 'Engine Displacement', 'placeholder': 'e.g., 1498 cc'},
+        {'id': 'mileage', 'label': 'Mileage', 'placeholder': 'e.g., 21.7 km/l'},
+        {'id': 'fuel_tank', 'label': 'Fuel Tank Capacity', 'placeholder': 'e.g., 52 litres'},
+        {'id': 'seating_capacity', 'label': 'Seating Capacity', 'placeholder': 'e.g., 5'},
+        {'id': 'body_type', 'label': 'Body Type', 'placeholder': 'e.g., SUV'}
+      ] %}
+      <div class="col-md-6">
+        <label for="{{ spec.id }}" class="form-label">{{ spec.label }}</label>
+        <input type="text" class="form-control" id="{{ spec.id }}" name="{{ spec.id }}" placeholder="{{ spec.placeholder }}">
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Features -->
+    <div class="mb-4 mt-4">
+      <label for="features" class="form-label">Features <small class="text-muted">(comma separated)</small></label>
+      <input type="text" class="form-control" id="features" name="features" placeholder="e.g., Power Steering, Alloy Wheels, ABS">
+    </div>
+
+    <!-- Images -->
+    <div class="mb-4">
+      <label for="images" class="form-label">Car Images</label>
+      <input type="file" class="form-control" id="images" name="images" accept="image/*" multiple required>
+
+      {% if image_filenames %}
+        <div class="row mt-3">
+          {% for image in image_filenames %}
+            <div class="col-md-3 mb-2">
+              <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Car Image" class="img-fluid rounded">
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Submit -->
+    <button type="submit" class="btn btn-primary w-100">Add Car</button>
+  </form>
+</div>
+
+{% endblock %}

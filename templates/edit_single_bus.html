@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container pt-5 mt-5">
+    <h2>Edit Bus</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="name" class="form-label">Bus Name</label>
+            <input type="text" class="form-control" name="name" id="name" value="{{ bus.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="model" class="form-label">Model</label>
+            <input type="text" class="form-control" name="model" id="model" value="{{ bus.model }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="seating_capacity" class="form-label">Seating Capacity</label>
+            <input type="number" class="form-control" name="seating_capacity" id="seating_capacity" value="{{ bus.seating_capacity }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Upload New Image (optional)</label>
+            <input type="file" class="form-control" name="image" id="image">
+            {% if bus.image_filename %}
+                <p class="mt-2">Current Image:</p>
+                <img src="{{ url_for('static', filename='images/buses/' + bus.image_filename) }}" alt="Bus Image" width="150">
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Update Bus</button>
+        <a href="{{ url_for('bus.list_buses') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

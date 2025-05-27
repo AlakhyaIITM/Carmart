@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<div class="admin-dashboard">
+  <h2 class="admin-title">CarMart Admin Dashboard</h2>
+
+  <div class="admin-grid">
+
+    <div class="admin-card">
+      <h3>Car Listings</h3>
+      <p>Add, edit, or delete available cars on the platform.</p>
+      <div class="btn-group">
+        <a href="{{ url_for('car_bp.add_car') }}" class="btn btn-primary">
+          <i class="bi bi-cloud-plus-fill"></i> Add Car
+        </a>
+        <a href="{{ url_for('car_bp.list_cars_for_edit') }}" class="btn btn-secondary">
+          <i class="bi bi-pencil-square"></i> Edit Cars
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <h3>Cab Listings</h3>
+      <p>Manage cab rentals and packages.</p>
+      <div class="btn-group">
+        <a href="{{ url_for('cab_bp.add_cab') }}" class="btn btn-primary">
+          <i class="bi bi-cloud-plus-fill"></i> Add Cab
+        </a>
+        <a href="{{ url_for('cab_bp.list_cabs_for_edit') }}" class="btn btn-secondary">
+          <i class="bi bi-pencil-square"></i> Edit Cabs
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-card">
+      <h3>Bus Reservations</h3>
+      <p>Manage available buses for group bookings.</p>
+      <div class="btn-group">
+        <a href="{{ url_for('bus.add_bus') }}" class="btn btn-primary">
+          <i class="bi bi-cloud-plus-fill"></i> Add Bus
+        </a>
+        <a href="{{ url_for('bus.list_buses') }}" class="btn btn-secondary">
+          <i class="bi bi-pencil-square"></i> Edit Buses
+        </a>
+      </div>
+    </div>
+
+    <div class="admin-card disabled">
+      <h3>Coming Soon</h3>
+      <p>Plan new features, check analytics, and manage users.</p>
+      <button class="btn btn-disabled" disabled>
+        <i class="bi bi-hourglass-split"></i> Not Available
+      </button>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
