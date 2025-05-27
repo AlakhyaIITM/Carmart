@@ -214,23 +214,27 @@ p {
         padding: 20px;
     }
 }
-
 /* === For Small Screens === */
 @media (max-width: 767px) {
-    .showcase-section {
-        flex-direction: column; /* Stack the content vertically on small screens */
-    }
-    .showcase-image {
-        max-height: 300px; /* Smaller image on mobile */
-        object-fit: cover;
-    }
-    .showcase-section .d-flex {
-        flex-direction: column;
-        align-items: stretch;
+  .showcase-section .d-flex {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
+
   .showcase-button {
-    width: 100%;
-    margin-bottom: 10px;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
+  .showcase-button:first-child {
+    flex-basis: 100%;
+  }
+
+  .showcase-button:nth-child(2),
+  .showcase-button:nth-child(3) {
+    flex: 1 1 calc(50% - 10px); /* side-by-side with gap */
+    max-width: calc(50% - 10px);
   }
 }
 /* === Animations === */
