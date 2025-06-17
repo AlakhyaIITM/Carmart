@@ -15,7 +15,7 @@ def view_cabs():
     return render_template('view_cabs.html', cabs=cabs)
 
 # Route: Add a new cab
-@cab_bp.route('/cabadd', methods=['GET', 'POST'])
+@cab_bp.route('/admin/cabadd', methods=['GET', 'POST'])
 def add_cab():
     if request.method == 'POST':
         try:
@@ -56,13 +56,13 @@ def view_cab(cab_id):
     return render_template('view_cab.html', cab=cab)
 
 # Route: List cabs for editing
-@cab_bp.route('/cabedit')
+@cab_bp.route('/admin/cabedit')
 def list_cabs_for_edit():
     cabs = Cab.query.order_by(Cab.year.desc()).all()
     return render_template('list_cabs_edit.html', cabs=cabs)
 
 # Route: Edit a cab
-@cab_bp.route('/cab/edit/<int:cab_id>', methods=['GET', 'POST'])
+@cab_bp.route('/admin/cab/edit/<int:cab_id>', methods=['GET', 'POST'])
 def edit_cab(cab_id):
     cab = Cab.query.get_or_404(cab_id)
 
@@ -85,7 +85,7 @@ def edit_cab(cab_id):
     return render_template('edit_cab.html', cab=cab)
 
 # Route: Delete a cab
-@cab_bp.route('/cab/delete/<int:cab_id>', methods=['POST'])
+@cab_bp.route('/admin/cab/delete/<int:cab_id>', methods=['POST'])
 def delete_cab(cab_id):
     try:
         cab = Cab.query.get_or_404(cab_id)

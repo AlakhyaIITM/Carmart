@@ -39,7 +39,7 @@ def index():
         sort_by=sort_by
     )
 
-@car_bp.route('/caradd', methods=['GET', 'POST'])
+@car_bp.route('/admin/caradd', methods=['GET', 'POST'])
 def add_car():
     if request.method == 'POST':
         try:
@@ -99,12 +99,12 @@ def view_car(car_id):
     features = car.get_features()
     return render_template('view_car.html', car=car, specifications=specifications, features=features)
 
-@car_bp.route('/caredit')
+@car_bp.route('/admin/caredit')
 def list_cars_for_edit():
     cars = Car.query.order_by(Car.last_updated.desc()).all()
     return render_template('list_cars_edit.html', cars=cars)
 
-@car_bp.route('/edit/<int:car_id>', methods=['GET', 'POST'], endpoint='edit_car')
+@car_bp.route('/admin/edit/<int:car_id>', methods=['GET', 'POST'], endpoint='edit_car')
 def edit_car(car_id):
     car = Car.query.get_or_404(car_id)
     if request.method == 'POST':
@@ -145,7 +145,7 @@ def edit_car(car_id):
             flash(f"Error updating car: {str(e)}", "danger")
     return render_template('edit_car.html', car=car)
 
-@car_bp.route('/delete/<int:car_id>', methods=['POST'])
+@car_bp.route('/admin/delete/<int:car_id>', methods=['POST'])
 def delete_car(car_id):
     try:
         car = Car.query.get_or_404(car_id)

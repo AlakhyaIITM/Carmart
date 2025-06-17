@@ -8,7 +8,7 @@ bus_bp = Blueprint('bus', __name__)
 BUS_UPLOAD_FOLDER = os.path.join('static', 'images', 'buses')
 
 # Route: Add new bus
-@bus_bp.route('/busadd', methods=['GET', 'POST'])
+@bus_bp.route('/admin/busadd', methods=['GET', 'POST'])
 def add_bus():
     if request.method == 'POST':
         name = request.form['name']
@@ -35,7 +35,7 @@ def add_bus():
     return render_template('add_bus.html')
 
 # Route: List all buses for editing/deleting
-@bus_bp.route('/busedit')
+@bus_bp.route('/admin/busedit')
 def list_buses():
     buses = Bus.query.all()
     return render_template('edit_bus.html', buses=buses)
@@ -63,7 +63,7 @@ def edit_bus(bus_id):
     return render_template('edit_single_bus.html', bus=bus)
 
 # Route: Delete a specific bus
-@bus_bp.route('/deletebus/<int:bus_id>', methods=['POST'])
+@bus_bp.route('/admin/deletebus/<int:bus_id>', methods=['POST'])
 def delete_bus(bus_id):
     bus = Bus.query.get_or_404(bus_id)
 
