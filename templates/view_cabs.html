@@ -1,86 +1,139 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container pt-5 mt-5">
-    <!-- Hill Station Packages -->
-    <section class="mb-5">
-        <h2 class="mb-3">🏞️ Hill Station & Sightseeing Packages</h2>
+<div class="container-fluid p-0">
 
-        <!-- Darjeeling -->
-        <div class="mb-4">
-            <h4>🌄 Darjeeling Tour</h4>
-            <p>Includes Tiger Hill, Batasia Loop, Tea Gardens, Himalayan Mountaineering Institute, and Mall Road. Available for 1N/2D or 2N/3D packages.</p>
-        </div>
-
-        <!-- Kurseong -->
-        <div class="mb-4">
-            <h4>🌿 Kurseong Trip</h4>
-            <p>Quiet town surrounded by lush tea gardens. Visit Eagle’s Crag, Makaibari Tea Estate, and more.</p>
-        </div>
-
-        <!-- Sikkim -->
-        <div class="mb-4">
-            <h4>❄️ Sikkim Packages</h4>
-            <p>Travel to Gangtok, Tsomgo Lake, Nathula Pass, and more. Customizable plans with hotel and cab combos.</p>
-        </div>
-
-        <!-- North Bengal Tour -->
-        <div class="mb-4">
-            <h4>🏕️ North Bengal Tour</h4>
-            <p>Explore scenic towns like Kalimpong, Lava, Lolegaon, Dooars, and Mirik. Packages available for families and groups. Includes nature walks, monastery visits, and tea garden stays.</p>
-        </div>
-
-        <!-- Jaldapara -->
-        <div class="mb-4">
-            <h4>🦏 Jaldapara National Park Safari</h4>
-            <p>Experience wildlife safaris and elephant rides. We provide cab services from Alipurduar, Hasimara, and Madarihat with flexible return options.</p>
-        </div>
-
-        <!-- Jaigaon & Bhutan -->
-        <div class="mb-4">
-            <h4>🌏 Jaigaon & Bhutan Entry</h4>
-            <p>Transport to Jaigaon (India-Bhutan border) and assistance for entry to Phuentsholing, Bhutan. We also offer support for permits and onward Bhutan travel.</p>
+    <!-- HERO BANNER -->
+    <section class="cab-hero-banner">
+        <div>
+            <h1>Cab Rentals Across North Bengal & Eastern Himalayas</h1>
+            <p>Reliable AC and Non-AC cabs for city trips, hill stations, airport transfers, and sightseeing – available with flexible pickup and drop.</p>
+            <a href="#fleet" class="btn btn-warning btn-lg mt-3">🚘 View Available Cabs</a>
         </div>
     </section>
 
-    <!-- Airport Pickup/Drop -->
-    <section class="mb-5">
-        <h2 class="mb-3">🚖 Bagdogra Airport Pickup & Drop</h2>
-        <p>We provide reliable and comfortable airport transfers from Bagdogra Airport to nearby towns and tourist destinations including Siliguri, Darjeeling, Gangtok, and more. Both private and shared options available.</p>
+    <!-- ROUTE HELP CTA -->
+    <section class="text-center py-5 bg-light">
+        <div class="container">
+            <h2 class="mb-3">Need Help Choosing a Route?</h2>
+            <p class="mb-0">Our team can help you plan the best route, whether it's a short city trip or a long hill station tour. All with the comfort of our fleet and professional drivers.</p>
+            <a href="https://wa.me/919434228952?text=Hi, I’d like help planning my cab route." class="btn btn-success mt-3">📲 Chat With Us</a>
+        </div>
     </section>
 
-    <!-- Available Cabs Section -->
-    <section>
-        <h2 class="mb-4">🚘 Our Available Cabs</h2>
+ <!-- FEATURED TOUR PACKAGES -->
+<section id="tour-packages" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">📍 Suggested Itineraries</h2>
 
-        {% if cabs %}
+        {% set featured_packages = [
+            {
+                'icon': '🌄', 'title': 'Darjeeling Classic Tour',
+                'desc': 'Covers Tiger Hill, Peace Pagoda, Zoo, Tea Gardens. Includes pickup/drop + sightseeing.',
+                'inclusions': ['Sightseeing Cab', 'Hotel Pickup/Drop', 'Driver Allowance'],
+                'image': 'darjeeling.jpg'
+            },
+            {
+                'icon': '❄️', 'title': 'Sikkim Scenic Combo',
+                'desc': 'Gangtok, Tsomgo Lake, Baba Mandir. Optional: Nathula Pass.',
+                'inclusions': ['Permit Assistance', 'Cab + Hotel Combo', 'Flexible Stops'],
+                'image': 'sikkim.jpg'
+            },
+            {
+                'icon': '🦏', 'title': 'Jaldapara Safari Special',
+                'desc': 'Jungle safari + Chilapata options. Pickup from Madarihat, Hasimara.',
+                'inclusions': ['Jeep Safari Help', 'Eco Lodge Support', 'Cab for Full Tour'],
+                'image': 'jaldapara.jpg'
+            },
+            {
+                'icon': '🌏', 'title': 'Bhutan Entry Support',
+                'desc': 'Jaigaon drop and Phuentsholing entry assistance.',
+                'inclusions': ['Permit Help', 'Local Support', 'Cab Wait Option'],
+                'image': 'bhutan.jpg'
+            }
+        ] %}
+
+        <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
+            {% for pkg in featured_packages %}
+            <div class="col d-flex align-items-stretch">
+                <div class="card h-100 shadow-sm w-100 text-center">
+                    {% if pkg.image %}
+                    <img src="{{ url_for('static', filename='images/packages/' ~ pkg.image) }}" class="card-img-top" alt="{{ pkg.title }}" style="max-height:180px; object-fit:cover;">
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h4 class="card-title">{{ pkg.icon }} {{ pkg.title }}</h4>
+                        <p>{{ pkg.desc }}</p>
+                        <ul class="small mb-3 text-start mx-auto" style="display:inline-block;text-align:left;">
+                            {% for item in pkg.inclusions %}
+                            <li>✔️ {{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                        <a href="https://wa.me/919434228952?text=Hi, I’m interested in the {{ pkg.title }} package from CarMart. Please share details." class="btn btn-outline-primary btn-sm w-100 mt-auto" target="_blank">Enquire About This Trip</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+    <!-- AIRPORT TRANSFERS -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="card p-4 shadow-sm"><h2 class="text-center mb-4">✈️ Bagdogra Airport Cab Service</h2>
+                <div class="text-center mb-4">
+                    <img src="{{ url_for('static', filename='images/bagdogra-airport.jpg') }}" alt="Bagdogra Airport Cab Service" class="img-fluid rounded shadow-sm";">
+                </div>
+                <p>
+                    Book pickup/drop to Siliguri, Darjeeling, Kalimpong, or Sikkim with real-time flight tracking, experienced drivers, and reliable service.
+                </p>
+                <ul class="mb-3">
+                    <li>✔️ Private & Shared Options (Sedan, SUV, Tempo Traveller)</li>
+                    <li>✔️ Luggage-friendly Vehicles (ample boot space for suitcases & bags)</li>
+                    <li>✔️ 24x7 Service on Pre-booking (late night/early morning flights covered)</li>
+                    <li>✔️ Meet & Greet at Arrival Gate (driver with placard on request)</li>
+                    <li>✔️ Real-time Flight Tracking (no extra wait charges for delays)</li>
+                    <li>✔️ Sanitized & Well-Maintained Fleet</li>
+                    <li>✔️ Experienced, Verified Drivers</li>
+                </ul>
+                <a href="https://wa.me/919434228952?text=Hi, I’d like to book a cab from Bagdogra Airport with CarMart." class="btn btn-outline-success w-100">Book an Airport Cab</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- CAB LISTINGS -->
+    <section id="fleet" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">🚘 Our Fleet</h2>
+            {% if cabs %}
             <div class="row">
                 {% for cab in cabs %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            {% if cab.images and cab.images[0] %}
-                                <img src="{{ url_for('static', filename='images/cabs/' ~ cab.images[0].filename) }}" class="card-img-top" alt="{{ cab.make }} {{ cab.model }}">
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title">{{ cab.make }} {{ cab.model }}</h5>
-                                <p class="card-text">
-                                    Year: {{ cab.year }}<br>
-                                    Seats: {{ cab.seating_capacity }}<br>
-                                    AC: {{ 'Yes' if cab.ac else 'No' }}
-                                </p>
-                            </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        {% if cab.images and cab.images[0] %}
+                        <img src="{{ url_for('static', filename='images/cabs/' ~ cab.images[0].filename) }}" class="card-img-top" alt="{{ cab.make }} {{ cab.model }}">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ cab.make }} {{ cab.model }}</h5>
+                            <p><strong>Seats:</strong> {{ cab.seating_capacity }} | <strong>AC:</strong> {{ 'Yes' if cab.ac else 'No' }}</p>
+                            <p><strong>Year:</strong> {{ cab.year }}</p>
+                            <a href="https://wa.me/919434228952?text=Hi, I want to book the {{ cab.make }} {{ cab.model }} for my upcoming trip." class="btn btn-outline-success btn-sm w-100" target="_blank">📲 Book This Cab</a>
                         </div>
                     </div>
+                </div>
                 {% endfor %}
             </div>
-        {% else %}
-            <p>No cabs currently listed.</p>
-        {% endif %}
+            {% else %}
+            <p class="text-muted text-center">No cabs available currently. Please check again later.</p>
+            {% endif %}
+        </div>
     </section>
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/919434228952?text=Hi%2C%20I%27m%20interested%20in%20your%20cab%20services%20listed%20on%20CarMart.%20Could%20you%20share%20more%20details%3F"
-    class="whatsapp-float" target="_blank">
-    <img src="{{ url_for('static', filename='images/whatsapp-icon.png') }}" alt="WhatsApp" />
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/919434228952?text=Hi, I want to book a cab or tour package from CarMart. Please assist." class="whatsapp-float" target="_blank">
+        <img src="{{ url_for('static', filename='images/whatsapp-icon.png') }}" alt="WhatsApp" />
     </a>
+
 </div>
 {% endblock %}
